@@ -721,6 +721,7 @@ static int parse_config_descriptors(struct libusb_device *dev)
 		}
 
 		if (priv->sysfs_dir) {
+			#ifndefANDROID
 			/*
 			 * In sysfs wTotalLength is ignored, instead the kernel returns a
 			 * config descriptor with verified bLength fields, with descriptors
@@ -743,6 +744,7 @@ static int parse_config_descriptors(struct libusb_device *dev)
 					  config_len, sysfs_config_len);
 				config_len = sysfs_config_len;
 			}
+			#endif
 		} else {
 			/*
 			 * In usbfs the config descriptors are wTotalLength bytes apart,
