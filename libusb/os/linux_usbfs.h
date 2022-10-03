@@ -177,7 +177,7 @@ static inline int linux_start_event_monitor(void)
 #elif !defined(__ANDROID__)
 	return linux_netlink_start_event_monitor();
 #else
-	return LIBUSB_SUCCESS;
+	return linux_netlink_start_event_monitor();
 #endif
 }
 
