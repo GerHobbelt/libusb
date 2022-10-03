@@ -721,7 +721,7 @@ static int parse_config_descriptors(struct libusb_device *dev)
 		}
 
 		if (priv->sysfs_dir) {
-			#ifndefANDROID
+			#ifndef ANDROID
 			/*
 			 * In sysfs wTotalLength is ignored, instead the kernel returns a
 			 * config descriptor with verified bLength fields, with descriptors
