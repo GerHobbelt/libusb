@@ -1266,6 +1266,7 @@ int API_EXPORTED libusb_wrap_sys_device(libusb_context *ctx, intptr_t sys_dev,
 	usbi_mutex_init(&_dev_handle->lock);
 
 	r = usbi_backend.wrap_sys_device(ctx, _dev_handle, sys_dev);
+	printf("wrap_sys_device r value %d", r);
 	if (r < 0) {
 		printf("wrap_sys_device 0x% returns %d", (uintptr_t)sys_dev, r);
 		usbi_dbg(ctx, "wrap_sys_device 0x%" PRIxPTR " returns %d", (uintptr_t)sys_dev, r);
