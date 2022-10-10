@@ -1248,20 +1248,26 @@ int API_EXPORTED libusb_wrap_sys_device(libusb_context *ctx, intptr_t sys_dev,
 	int r;
 
 	usbi_dbg(ctx, "wrap_sys_device 0x%" PRIxPTR, (uintptr_t)sys_dev);
+	printf("wrap_sys_device 0x% \n", (uintptr_t)sys_dev);
 
 	ctx = usbi_get_context(ctx);
 
-	if (!usbi_backend.wrap_sys_device)
+	if (!usbi_backend.wrap_sys_device){
+		printf("LIBUSB_ERROR_NOT_SUPPORTED \n");
 		return LIBUSB_ERROR_NOT_SUPPORTED;
+	}
 
 	_dev_handle = calloc(1, PTR_ALIGN(sizeof(*_dev_handle)) + priv_size);
-	if (!_dev_handle)
+	if (!_dev_handle){
+		printf("LIBUSB_ERROR_NO_MEM \n");
 		return LIBUSB_ERROR_NO_MEM;
-
+	}
+		
 	usbi_mutex_init(&_dev_handle->lock);
 
 	r = usbi_backend.wrap_sys_device(ctx, _dev_handle, sys_dev);
 	if (r < 0) {
+		printf("wrap_sys_device 0x% returns %d", (uintptr_t)sys_dev, r);
 		usbi_dbg(ctx, "wrap_sys_device 0x%" PRIxPTR " returns %d", (uintptr_t)sys_dev, r);
 		usbi_mutex_destroy(&_dev_handle->lock);
 		free(_dev_handle);
