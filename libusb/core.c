@@ -1247,8 +1247,8 @@ int API_EXPORTED libusb_wrap_sys_device(libusb_context *ctx, intptr_t sys_dev,
 	size_t priv_size = usbi_backend.device_handle_priv_size;
 	int r;
 
-	usbi_dbg(ctx, "wrap_sys_device 0x%" PRIxPTR, (uintptr_t)sys_dev);
-	printf("wrap_sys_device 0x% \n", (uintptr_t)sys_dev);
+	usbi_dbg(ctx, "wrap_sys_device 0x% \n" PRIxPTR, (uintptr_t)sys_dev);
+	//printf("wrap_sys_device %d \n", (uintptr_t)sys_dev);
 
 	ctx = usbi_get_context(ctx);
 
@@ -1266,9 +1266,9 @@ int API_EXPORTED libusb_wrap_sys_device(libusb_context *ctx, intptr_t sys_dev,
 	usbi_mutex_init(&_dev_handle->lock);
 
 	r = usbi_backend.wrap_sys_device(ctx, _dev_handle, sys_dev);
-	printf("wrap_sys_device r value %d", r);
+	printf("wrap_sys_device r value %d \n", r);
 	if (r < 0) {
-		printf("wrap_sys_device 0x% returns %d", (uintptr_t)sys_dev, r);
+		printf("wrap_sys_device if %d \n", r < 0);
 		usbi_dbg(ctx, "wrap_sys_device 0x%" PRIxPTR " returns %d", (uintptr_t)sys_dev, r);
 		usbi_mutex_destroy(&_dev_handle->lock);
 		free(_dev_handle);
