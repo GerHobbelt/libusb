@@ -173,11 +173,14 @@ void linux_netlink_hotplug_poll(void);
 static inline int linux_start_event_monitor(void)
 {
 #if defined(HAVE_LIBUDEV)
+	printf("linux_usbfs_libusb.h HAVE_LIBUDEV");
 	return linux_udev_start_event_monitor();
 #elif !defined(__ANDROID__)
+	printf("linux_usbfs_libusb.h __ANDROID__");
 	return linux_netlink_start_event_monitor();
 #else
-	return linux_netlink_start_event_monitor();
+	printf("linux_usbfs_libusb.h else");
+	return LIBUSB_SUCCESS;
 #endif
 }
 
