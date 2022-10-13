@@ -410,6 +410,7 @@ static int op_init(struct libusb_context *ctx)
 	r = LIBUSB_SUCCESS;
 	if (init_count == 0) {
 		/* start up hotplug event handler */
+		printf("linux_usbfs_libusb linux_start_event_monitor");
 		r = linux_start_event_monitor();
 	}
 	if (r == LIBUSB_SUCCESS) {
