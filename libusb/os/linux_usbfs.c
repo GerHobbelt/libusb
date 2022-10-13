@@ -351,14 +351,18 @@ static int kernel_version_ge(const struct kernel_version *ver,
 
 static int op_init(struct libusb_context *ctx)
 {
+	printf("linux_usbfs_libusb op_init");
 	struct kernel_version kversion;
 	const char *usbfs_path;
 	int r;
 
-	if (get_kernel_version(ctx, &kversion) < 0)
+	if (get_kernel_version(ctx, &kversion) < 0){
+		printf("linux_usbfs_libusb get_kernel_version");
 		return LIBUSB_ERROR_OTHER;
+	}
 
 	if (!kernel_version_ge(&kversion, 2, 6, 32)) {
+		printf("linux_usbfs_libusb kernel version is too old ");
 		usbi_err(ctx, "kernel version is too old (reported as %d.%d.%d)",
 			 kversion.major, kversion.minor,
 			 kversion.sublevel != -1 ? kversion.sublevel : 0);
@@ -367,6 +371,7 @@ static int op_init(struct libusb_context *ctx)
 
 	usbfs_path = find_usbfs_path();
 	if (!usbfs_path) {
+		printf("linux_usbfs_libusb kernel could not find usbfs");
 		usbi_err(ctx, "could not find usbfs");
 		return LIBUSB_ERROR_OTHER;
 	}
@@ -398,6 +403,7 @@ static int op_init(struct libusb_context *ctx)
 	}
 
 	if (no_enumeration) {
+		printf("linux_usbfs_libusb no_enumeration");
 		return LIBUSB_SUCCESS;
 	}
 
@@ -413,8 +419,11 @@ static int op_init(struct libusb_context *ctx)
 		else if (init_count == 0)
 			linux_stop_event_monitor();
 	} else {
+		printf("linux_usbfs_libusb error starting hotplug event monitor");
 		usbi_err(ctx, "error starting hotplug event monitor");
 	}
+	
+	printf("linux_usbfs_libusb 111111");
 
 	return r;
 }
