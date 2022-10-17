@@ -155,7 +155,7 @@ typedef SSIZE_T ssize_t;
 extern "C" {
 #endif
 	
-typedef int(* _Function_android_filedescription_callback)(int _BusNumber, int _DeviceAddress);
+typedef int (* _Function_android_filedescription_callback)(int _BusNumber, int _DeviceAddress);
 
 void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName);
 
