@@ -182,6 +182,20 @@ static int dev_has_config0(struct libusb_device *dev)
 
 static int get_usbfs_fd(struct libusb_device *dev, mode_t mode, int silent)
 {
+	
+	#if defined(__ANDROID__)
+	_Function_android_filedescription_callback    vFunctionFileHandle = libusb_android_get_filedescription_callback();
+	if(vFunctionFileHandle)
+	{
+		return vFunctionFileHandle(dev->bus_number, dev->device_address );
+	}
+	else
+	{
+		return LIBUSB_ERROR_IO;
+	}
+#else
+	
+	
 	struct libusb_context *ctx = DEVICE_CTX(dev);
 	char path[24];
 	int fd;
@@ -223,6 +237,8 @@ static int get_usbfs_fd(struct libusb_device *dev, mode_t mode, int silent)
 	if (errno == ENOENT)
 		return LIBUSB_ERROR_NO_DEVICE;
 	return LIBUSB_ERROR_IO;
+	
+	#endif
 }
 
 /* check dirent for a /dev/usbdev%d.%d name
