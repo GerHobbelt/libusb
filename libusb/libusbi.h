@@ -197,6 +197,10 @@ static inline void list_init(struct list_head *entry)
 {
 	entry->prev = entry->next = entry;
 }
+	
+void usbi_hotplug_append_device(const char* _SysName);
+
+void usbi_hotplug_remove_device(const char* _SysName);
 
 static inline void list_add(struct list_head *entry, struct list_head *head)
 {
