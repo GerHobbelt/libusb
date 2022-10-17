@@ -1472,6 +1472,17 @@ int LIBUSB_CALL libusb_attach_kernel_driver(libusb_device_handle *dev_handle,
 	int interface_number);
 int LIBUSB_CALL libusb_set_auto_detach_kernel_driver(
 	libusb_device_handle *dev_handle, int enable);
+	
+	
+typedef int(* _Function_android_filedescription_callback)(int _BusNumber, int _DeviceAddress);
+
+void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName);
+
+void LIBUSB_CALL libusb_hotplug_remove_device(const char* _SysName);
+
+void LIBUSB_CALL libusb_android_set_filedescription_callback(_Function_android_filedescription_callback _Function);
+
+_Function_android_filedescription_callback LIBUSB_CALL libusb_android_get_filedescription_callback(void);
 
 /* async I/O */
 
