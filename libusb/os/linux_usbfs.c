@@ -246,6 +246,34 @@ static int is_usbdev_entry(const char *name, uint8_t *bus_p, uint8_t *dev_p)
 	return 1;
 }
 
+void usbi_hotplug_append_device(const char* _SysName)
+{
+	int  	vBus = 0;
+	int  	vAddress = 0;
+
+	if(_SysName == NULL || strlen(_SysName) == 0)
+	{
+		return;
+	}
+
+	sscanf(_SysName, "/dev/bus/usb/%d/%d", &vBus, &vAddress);
+	linux_hotplug_enumerate((uint8_t)vBus, (uint8_t)vAddress, _SysName);
+}
+
+void usbi_hotplug_remove_device(const char* _SysName)
+{
+	int  	vBus = 0;
+	int  	vAddress = 0;
+
+	if(_SysName == NULL || strlen(_SysName) == 0)
+	{
+		return;
+	}
+
+	sscanf(_SysName, "/dev/bus/usb/%d/%d", &vBus, &vAddress);
+	linux_device_disconnected((uint8_t)vBus, (uint8_t)vAddress);
+}
+
 static const char *find_usbfs_path(void)
 {
 	const char *path;
