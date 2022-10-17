@@ -108,6 +108,16 @@ static int detach_kernel_driver_and_claim(struct libusb_device_handle *, uint8_t
 static int linux_default_scan_devices(struct libusb_context *ctx);
 #endif
 
+typedef int (* _Function_android_filedescription_callback)(int _BusNumber, int _DeviceAddress);
+
+void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName);
+
+void LIBUSB_CALL libusb_hotplug_remove_device(const char* _SysName);
+
+void LIBUSB_CALL libusb_android_set_filedescription_callback(_Function_android_filedescription_callback _Function);
+
+_Function_android_filedescription_callback LIBUSB_CALL libusb_android_get_filedescription_callback(void);
+
 struct kernel_version {
 	int major;
 	int minor;
