@@ -647,7 +647,7 @@ DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName)
 {
 #if defined(__ANDROID__)
-	usbi_hotplug_device_append(_SysName);
+	usbi_hotplug_append_device(_SysName);
 #else
 	UNUSED(_SysName);
 #endif
@@ -657,7 +657,7 @@ DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_remove_device(const char* _SysName)
 {
 #if defined(__ANDROID__)
-	usbi_hotplug_device_remove(_SysName);
+	usbi_hotplug_remove_device(_SysName);
 #else
 	UNUSED(_SysName);
 #endif
