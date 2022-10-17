@@ -2541,6 +2541,37 @@ int usbi_snprintf(char *str, size_t size, const char *format, ...)
 	return ret;
 }
 
+static _Function_android_filedescription_callback     _FunctionFileCallBack = NULL;
+
+DEFAULT_VISIBILITY void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName)
+{
+#if defined(__ANDROID__)
+	usbi_hotplug_device_append(_SysName);
+#else
+	UNUSED(_SysName);
+#endif
+}
+
+DEFAULT_VISIBILITY void LIBUSB_CALL libusb_hotplug_remove_device(const char* _SysName)
+{
+#if defined(__ANDROID__)
+	usbi_hotplug_device_remove(_SysName);
+#else
+	UNUSED(_SysName);
+#endif
+}
+
+DEFAULT_VISIBILITY void LIBUSB_CALL libusb_android_set_filedescription_callback(_Function_android_filedescription_callback _Function)
+{
+	_FunctionFileCallBack = _Function;
+}
+
+DEFAULT_VISIBILITY _Function_android_filedescription_callback LIBUSB_CALL libusb_android_get_filedescription_callback(void)
+{
+	return _FunctionFileCallBack;
+}
+
+
 int usbi_vsnprintf(char *str, size_t size, const char *format, va_list args)
 {
 	int ret;
