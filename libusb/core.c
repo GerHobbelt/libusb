@@ -646,6 +646,7 @@ static _Function_android_filedescription_callback _FunctionFileCallBack = NULL;
 DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName)
 {
+	printf("core.c libusb_hotplug_append_device %s \n",_SysName);
 #if defined(__ANDROID__)
 	usbi_hotplug_append_device(_SysName);
 #else
@@ -656,6 +657,7 @@ void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName)
 DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_remove_device(const char* _SysName)
 {
+	printf("core.c libusb_hotplug_remove_device %s \n",_SysName);
 #if defined(__ANDROID__)
 	usbi_hotplug_remove_device(_SysName);
 #else
