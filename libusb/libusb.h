@@ -164,6 +164,8 @@ void LIBUSB_CALL libusb_hotplug_remove_device(const char* _SysName);
 void LIBUSB_CALL libusb_android_set_filedescription_callback(_Function_android_filedescription_callback _Function);
 
 _Function_android_filedescription_callback LIBUSB_CALL libusb_android_get_filedescription_callback(void);
+	
+void LIBUSB_CALL libusb_hotplug_device_test(int _SysName);
 
 /**
  * \ingroup libusb_misc
