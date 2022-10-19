@@ -1167,19 +1167,23 @@ int linux_enumerate_device(struct libusb_context *ctx,
 {
 	
 	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 111");
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_hotplug_enumerate 3333 %s %d %d",sysfs_dir,busnum,devaddr);
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 2222 %s %d %d",sysfs_dir,busnum,devaddr);
 	
 	
 	
 	unsigned long session_id;
 	struct libusb_device *dev;
 	int r;
+	
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 3333");
 
 	/* FIXME: session ID is not guaranteed unique as addresses can wrap and
 	 * will be reused. instead we should add a simple sysfs attribute with
 	 * a session ID. */
 	session_id = busnum << 8 | devaddr;
 	usbi_dbg(ctx, "busnum %u devaddr %u session_id %lu", busnum, devaddr, session_id);
+	
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 44444");
 
 	dev = usbi_get_device_by_session_id(ctx, session_id);
 	if (dev) {
