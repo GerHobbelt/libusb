@@ -275,11 +275,16 @@ void usbi_hotplug_append_device(const char* _SysName)
 		return;
 	}
 	
-	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_append_device");
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_append_device %s",_SysName);
 	
 	printf("linux_usbfs_libusb usbi_hotplug_append_device %s \n",_SysName);
 
 	sscanf(_SysName, "/dev/bus/usb/%d/%d", &vBus, &vAddress);
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_append_device 2222 %s",_SysName);
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_append_device %d %d",vBus,vAddress);
+	
+	
 	linux_hotplug_enumerate((uint8_t)vBus, (uint8_t)vAddress, _SysName);
 }
 
@@ -293,10 +298,14 @@ void usbi_hotplug_remove_device(const char* _SysName)
 		return;
 	}
 	
-	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_remove_device");
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_remove_device %s",_SysName);
 	printf("linux_usbfs_libusb usbi_hotplug_remove_device %s \n",_SysName);
 
 	sscanf(_SysName, "/dev/bus/usb/%d/%d", &vBus, &vAddress);
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_remove_device 2222 %s",_SysName);
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_hotplug_append_device %d %d",vBus,vAddress);
+	
 	linux_device_disconnected((uint8_t)vBus, (uint8_t)vAddress);
 }
 
@@ -1156,6 +1165,12 @@ retry:
 int linux_enumerate_device(struct libusb_context *ctx,
 	uint8_t busnum, uint8_t devaddr, const char *sysfs_dir)
 {
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 111");
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_hotplug_enumerate 3333 %s %d %d",sysfs_dir,busnum,devaddr);
+	
+	
+	
 	unsigned long session_id;
 	struct libusb_device *dev;
 	int r;
@@ -1168,6 +1183,9 @@ int linux_enumerate_device(struct libusb_context *ctx,
 
 	dev = usbi_get_device_by_session_id(ctx, session_id);
 	if (dev) {
+		
+		__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb session_id already exists");
+		
 		/* device already exists in the context */
 		usbi_dbg(ctx, "session_id %lu already exists", session_id);
 		libusb_unref_device(dev);
@@ -1176,25 +1194,43 @@ int linux_enumerate_device(struct libusb_context *ctx,
 
 	usbi_dbg(ctx, "allocating new device for %u/%u (session %lu)",
 		 busnum, devaddr, session_id);
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 2222");
+	
 	dev = usbi_alloc_device(ctx, session_id);
 	if (!dev)
 		return LIBUSB_ERROR_NO_MEM;
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 333");
 
 	r = initialize_device(dev, busnum, devaddr, sysfs_dir, -1);
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 4444");
 	if (r < 0)
 		goto out;
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 5555");
+	
 	r = usbi_sanitize_device(dev);
 	if (r < 0)
 		goto out;
 
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 6666");
+	
 	r = linux_get_parent_info(dev, sysfs_dir);
 	if (r < 0)
 		goto out;
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 7777");
+	
 out:
 	if (r < 0)
 		libusb_unref_device(dev);
 	else
 		usbi_connect_device(dev);
+	
+	
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 8888");
 
 	return r;
 }
@@ -1212,7 +1248,7 @@ void linux_hotplug_enumerate(uint8_t busnum, uint8_t devaddr, const char *sys_na
 	printf("linux_usbfs_libusb linux_hotplug_enumerate 2222 \n");
 	
 	for_each_context(ctx) {
-		__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_hotplug_enumerate 3333");
+		__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_hotplug_enumerate 3333 %s %d %d",sys_name,busnum,devaddr);
 		printf("linux_usbfs_libusb linux_hotplug_enumerate 3333 \n");
 		linux_enumerate_device(ctx, busnum, devaddr, sys_name);
 	}
@@ -1235,7 +1271,7 @@ void linux_device_disconnected(uint8_t busnum, uint8_t devaddr)
 	
 	usbi_mutex_static_lock(&active_contexts_lock);
 	for_each_context(ctx) {
-		__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_device_disconnected 3333");
+		__android_log_write(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_device_disconnected 3333 %d %d",busnum,devaddr);
 		printf("linux_usbfs_libusb linux_device_disconnected 333 \n");
 		dev = usbi_get_device_by_session_id(ctx, session_id);
 		if (dev) {
