@@ -1181,9 +1181,12 @@ int linux_enumerate_device(struct libusb_context *ctx,
 	 * will be reused. instead we should add a simple sysfs attribute with
 	 * a session ID. */
 	session_id = busnum << 8 | devaddr;
-	usbi_dbg(ctx, "busnum %u devaddr %u session_id %lu", busnum, devaddr, session_id);
 	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 44444");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 4444");
+	
+	//usbi_dbg(ctx, "busnum %u devaddr %u session_id %lu", busnum, devaddr, session_id);
+	
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 5555");
 
 	dev = usbi_get_device_by_session_id(ctx, session_id);
 	if (dev) {
@@ -1191,41 +1194,40 @@ int linux_enumerate_device(struct libusb_context *ctx,
 		__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb session_id already exists");
 		
 		/* device already exists in the context */
-		usbi_dbg(ctx, "session_id %lu already exists", session_id);
+		//usbi_dbg(ctx, "session_id %lu already exists", session_id);
 		libusb_unref_device(dev);
 		return LIBUSB_SUCCESS;
 	}
 
-	usbi_dbg(ctx, "allocating new device for %u/%u (session %lu)",
-		 busnum, devaddr, session_id);
+	//usbi_dbg(ctx, "allocating new device for %u/%u (session %lu)",busnum, devaddr, session_id);
 	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 2222");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 66666");
 	
 	dev = usbi_alloc_device(ctx, session_id);
 	if (!dev)
 		return LIBUSB_ERROR_NO_MEM;
 	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 333");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 7777");
 
 	r = initialize_device(dev, busnum, devaddr, sysfs_dir, -1);
 	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 4444");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 8888");
 	if (r < 0)
 		goto out;
 	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 5555");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 99999");
 	
 	r = usbi_sanitize_device(dev);
 	if (r < 0)
 		goto out;
 
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 6666");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device aaaa");
 	
 	r = linux_get_parent_info(dev, sysfs_dir);
 	if (r < 0)
 		goto out;
 	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 7777");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device bbbb");
 	
 out:
 	if (r < 0)
@@ -1234,7 +1236,7 @@ out:
 		usbi_connect_device(dev);
 	
 	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 8888");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device cccc");
 
 	return r;
 }
