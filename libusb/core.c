@@ -648,7 +648,7 @@ static _Function_android_filedescription_callback _FunctionFileCallBack = NULL;
 DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_device_test(int _SysName)
 {
-	log_str(LIBUSB_LOG_LEVEL_DEBUG,"core.c libusb_hotplug_device_test \n");
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "core.c libusb_hotplug_device_test \n");
 	printf("core.c libusb_hotplug_device_test %d \n",_SysName);
 
 }
@@ -656,7 +656,7 @@ void LIBUSB_CALL libusb_hotplug_device_test(int _SysName)
 DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName)
 {
-	log_str(LIBUSB_LOG_LEVEL_DEBUG,"core.c libusb_hotplug_append_device \n");
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "core.c libusb_hotplug_append_device \n");
 	printf("core.c libusb_hotplug_append_device %s \n",_SysName);
 #if defined(__ANDROID__)
 	usbi_hotplug_append_device(_SysName);
@@ -668,7 +668,7 @@ void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName)
 DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_remove_device(const char* _SysName)
 {
-	log_str(LIBUSB_LOG_LEVEL_DEBUG,"core.c libusb_hotplug_remove_device \n");
+	__android_log_write(ANDROID_LOG_DEBUG, "libusb", "core.c libusb_hotplug_remove_device \n");
 	printf("core.c libusb_hotplug_remove_device %s \n",_SysName);
 #if defined(__ANDROID__)
 	usbi_hotplug_remove_device(_SysName);
