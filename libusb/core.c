@@ -643,6 +643,15 @@ libusb_free_device_list(list, 1);
 
 static _Function_android_filedescription_callback _FunctionFileCallBack = NULL;
 
+
+
+DEFAULT_VISIBILITY
+void LIBUSB_CALL libusb_hotplug_device_test(int _SysName)
+{
+	printf("core.c libusb_hotplug_device_test %d \n",_SysName);
+
+}
+
 DEFAULT_VISIBILITY
 void LIBUSB_CALL libusb_hotplug_append_device(const char* _SysName)
 {
