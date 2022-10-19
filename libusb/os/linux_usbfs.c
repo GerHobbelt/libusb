@@ -281,6 +281,8 @@ void usbi_hotplug_append_device(const char* _SysName)
 	{
 		return;
 	}
+	
+	printf("linux_usbfs_libusb usbi_hotplug_append_device %s \n",_SysName);
 
 	sscanf(_SysName, "/dev/bus/usb/%d/%d", &vBus, &vAddress);
 	linux_hotplug_enumerate((uint8_t)vBus, (uint8_t)vAddress, _SysName);
@@ -295,6 +297,8 @@ void usbi_hotplug_remove_device(const char* _SysName)
 	{
 		return;
 	}
+	
+	printf("linux_usbfs_libusb usbi_hotplug_remove_device %s \n",_SysName);
 
 	sscanf(_SysName, "/dev/bus/usb/%d/%d", &vBus, &vAddress);
 	linux_device_disconnected((uint8_t)vBus, (uint8_t)vAddress);
@@ -1202,30 +1206,47 @@ out:
 void linux_hotplug_enumerate(uint8_t busnum, uint8_t devaddr, const char *sys_name)
 {
 	struct libusb_context *ctx;
+	
+	printf("linux_usbfs_libusb linux_hotplug_enumerate 111 \n");
 
 	usbi_mutex_static_lock(&active_contexts_lock);
+	
+	printf("linux_usbfs_libusb linux_hotplug_enumerate 2222 \n");
+	
 	for_each_context(ctx) {
+		printf("linux_usbfs_libusb linux_hotplug_enumerate 3333 \n");
 		linux_enumerate_device(ctx, busnum, devaddr, sys_name);
 	}
+	printf("linux_usbfs_libusb linux_hotplug_enumerate 4444 \n");
 	usbi_mutex_static_unlock(&active_contexts_lock);
 }
 
 void linux_device_disconnected(uint8_t busnum, uint8_t devaddr)
 {
+	printf("linux_usbfs_libusb linux_device_disconnected 111 \n");
+
 	struct libusb_context *ctx;
 	struct libusb_device *dev;
 	unsigned long session_id = busnum << 8 | devaddr;
 
+	printf("linux_usbfs_libusb linux_device_disconnected 22222 \n");
+	
 	usbi_mutex_static_lock(&active_contexts_lock);
 	for_each_context(ctx) {
+		printf("linux_usbfs_libusb linux_device_disconnected 333 \n");
 		dev = usbi_get_device_by_session_id(ctx, session_id);
 		if (dev) {
+			printf("linux_usbfs_libusb linux_device_disconnected 4444 \n");
 			usbi_disconnect_device(dev);
 			libusb_unref_device(dev);
 		} else {
+			printf("linux_usbfs_libusb linux_device_disconnected device not found for session \n");
 			usbi_dbg(ctx, "device not found for session %lx", session_id);
 		}
 	}
+	
+	printf("linux_usbfs_libusb linux_device_disconnected 55555 \n");
+	
 	usbi_mutex_static_unlock(&active_contexts_lock);
 }
 
