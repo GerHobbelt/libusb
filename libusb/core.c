@@ -826,17 +826,26 @@ int usbi_sanitize_device(struct libusb_device *dev)
 struct libusb_device *usbi_get_device_by_session_id(struct libusb_context *ctx,
 	unsigned long session_id)
 {
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_get_device_by_session_id 111");
+	
+	
 	struct libusb_device *dev;
 	struct libusb_device *ret = NULL;
 
 	usbi_mutex_lock(&ctx->usb_devs_lock);
+	
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_get_device_by_session_id 2222");
+	
 	for_each_device(ctx, dev) {
 		if (dev->session_data == session_id) {
+			__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_get_device_by_session_id 3333");
 			ret = libusb_ref_device(dev);
 			break;
 		}
 	}
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_get_device_by_session_id 4444");
 	usbi_mutex_unlock(&ctx->usb_devs_lock);
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb usbi_get_device_by_session_id 5555");
 
 	return ret;
 }
@@ -1212,10 +1221,16 @@ out:
 DEFAULT_VISIBILITY
 libusb_device * LIBUSB_CALL libusb_ref_device(libusb_device *dev)
 {
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb libusb_ref_device 111");
 	long refcnt;
 
 	refcnt = usbi_atomic_inc(&dev->refcnt);
+	
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb libusb_ref_device 2222 %d",refcnt);
+	
 	assert(refcnt >= 2);
+	
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb libusb_ref_device 3333");
 
 	return dev;
 }
