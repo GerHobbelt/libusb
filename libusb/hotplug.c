@@ -85,6 +85,8 @@
 #include <time.h>
 #include <libusb.h>
 
+#include <android/log.h>
+
 static int count = 0;
 
 int hotplug_callback(struct libusb_context *ctx, struct libusb_device *dev,
@@ -326,6 +328,9 @@ int API_EXPORTED libusb_hotplug_register_callback(libusb_context *ctx,
 	libusb_hotplug_callback_fn cb_fn, void *user_data,
 	libusb_hotplug_callback_handle *callback_handle)
 {
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 1111");
+	
 	struct usbi_hotplug_callback *hotplug_cb;
 
 	/* check for sane values */
@@ -337,12 +342,18 @@ int API_EXPORTED libusb_hotplug_register_callback(libusb_context *ctx,
 	    !cb_fn) {
 		return LIBUSB_ERROR_INVALID_PARAM;
 	}
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 2222");
 
 	/* check for hotplug support */
 	if (!libusb_has_capability(LIBUSB_CAP_HAS_HOTPLUG))
 		return LIBUSB_ERROR_NOT_SUPPORTED;
 
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 3333");
+	
 	ctx = usbi_get_context(ctx);
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 4444");
 
 	hotplug_cb = calloc(1, sizeof(*hotplug_cb));
 	if (!hotplug_cb)
@@ -363,8 +374,12 @@ int API_EXPORTED libusb_hotplug_register_callback(libusb_context *ctx,
 	}
 	hotplug_cb->cb = cb_fn;
 	hotplug_cb->user_data = user_data;
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 44444");
 
 	usbi_mutex_lock(&ctx->hotplug_cbs_lock);
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 55555");
 
 	/* protect the handle by the context hotplug lock */
 	hotplug_cb->handle = ctx->next_hotplug_cb_handle++;
@@ -374,29 +389,41 @@ int API_EXPORTED libusb_hotplug_register_callback(libusb_context *ctx,
 		ctx->next_hotplug_cb_handle = 1;
 
 	list_add(&hotplug_cb->list, &ctx->hotplug_cbs);
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 66666");
 
 	usbi_mutex_unlock(&ctx->hotplug_cbs_lock);
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 7777");
 
 	usbi_dbg(ctx, "new hotplug cb %p with handle %d", hotplug_cb, hotplug_cb->handle);
 
 	if ((flags & LIBUSB_HOTPLUG_ENUMERATE) && (events & LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED)) {
 		ssize_t i, len;
 		struct libusb_device **devs;
+		
+		__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 8888");
 
 		len = libusb_get_device_list(ctx, &devs);
 		if (len < 0) {
 			libusb_hotplug_deregister_callback(ctx, hotplug_cb->handle);
 			return (int)len;
 		}
+		
+		__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 8888 1111");
 
 		for (i = 0; i < len; i++) {
 			usbi_hotplug_match_cb(devs[i],
 					LIBUSB_HOTPLUG_EVENT_DEVICE_ARRIVED,
 					hotplug_cb);
 		}
+		
+		__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 8888 2222");
 
 		libusb_free_device_list(devs, 1);
 	}
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-usbmuxd",  "libusb_hotplug_register_callback geldi 9999");
 
 	if (callback_handle)
 		*callback_handle = hotplug_cb->handle;
