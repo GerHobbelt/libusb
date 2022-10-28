@@ -85,7 +85,7 @@
 #include <time.h>
 #include <libusb.h>
 
-#include <android/log.h>
+
 
 static int count = 0;
 
@@ -150,6 +150,9 @@ int main (void) {
 
 #define VALID_HOTPLUG_FLAGS			\
 	(LIBUSB_HOTPLUG_ENUMERATE)
+
+
+#include <android/log.h>
 
 void usbi_hotplug_init(struct libusb_context *ctx)
 {
