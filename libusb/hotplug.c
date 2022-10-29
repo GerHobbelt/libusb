@@ -430,6 +430,9 @@ int API_EXPORTED libusb_hotplug_register_callback(libusb_context *ctx,
 
 	if (callback_handle)
 		*callback_handle = hotplug_cb->handle;
+	
+	
+	__android_log_print(ANDROID_LOG_INFO, "libusb-hotplug",  "libusb_hotplug_register_callback geldi 12121212");
 
 	return LIBUSB_SUCCESS;
 }
