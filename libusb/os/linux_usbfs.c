@@ -1171,7 +1171,7 @@ int linux_enumerate_device(struct libusb_context *ctx,
 	
 	#if defined(__ANDROID__)
 		return LIBUSB_SUCCESS;
-	#endif
+	#else
 	
 	unsigned long session_id;
 	struct libusb_device *dev;
@@ -1241,6 +1241,8 @@ out:
 	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device cccc");
 
 	return r;
+	
+	#endif
 }
 
 void linux_hotplug_enumerate(uint8_t busnum, uint8_t devaddr, const char *sys_name)
