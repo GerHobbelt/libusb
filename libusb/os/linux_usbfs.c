@@ -1183,8 +1183,8 @@ int linux_enumerate_device(struct libusb_context *ctx,
 	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 4444");
 	
 	//usbi_dbg(ctx, "busnum %u devaddr %u session_id %lu", busnum, devaddr, session_id);
-	
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 5555");
+	 
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 5555 %d",session_id);
 
 	dev = usbi_get_device_by_session_id(ctx, session_id);
 	if (dev) {
@@ -1256,7 +1256,7 @@ void linux_hotplug_enumerate(uint8_t busnum, uint8_t devaddr, const char *sys_na
 	for_each_context(ctx) {
 		__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_hotplug_enumerate 3333 %s %d %d",sys_name,busnum,devaddr);
 		printf("linux_usbfs_libusb linux_hotplug_enumerate 3333 \n");
-		//linux_enumerate_device(ctx, busnum, devaddr, sys_name);
+		linux_enumerate_device(ctx, busnum, devaddr, sys_name);
 	}
 	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_hotplug_enumerate 4444");
 	printf("linux_usbfs_libusb linux_hotplug_enumerate 4444 \n");
