@@ -23,7 +23,6 @@
 
 #include <pthread.h>
 
-#include <android/log.h>
 
 
 #define PTHREAD_CHECK(expression)	ASSERT_EQ(expression, 0)
