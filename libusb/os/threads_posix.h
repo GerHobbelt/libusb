@@ -22,7 +22,9 @@
 #define LIBUSB_THREADS_POSIX_H
 
 #include <pthread.h>
-
+#ifdef __ANDROID__
+#include <android/log.h>
+#endif
 
 
 #define PTHREAD_CHECK(expression)	ASSERT_EQ(expression, 0)
@@ -48,22 +50,22 @@ static inline void usbi_mutex_init(usbi_mutex_t *mutex)
 }
 static inline void usbi_mutex_lock(usbi_mutex_t *mutex)
 {
-	_android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_lock");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_lock");
 	PTHREAD_CHECK(pthread_mutex_lock(mutex));
 }
 static inline void usbi_mutex_unlock(usbi_mutex_t *mutex)
 {
-	_android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_unlock");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_unlock");
 	PTHREAD_CHECK(pthread_mutex_unlock(mutex));
 }
 static inline int usbi_mutex_trylock(usbi_mutex_t *mutex)
 {
-	_android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_trylock");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_trylock");
 	return pthread_mutex_trylock(mutex) == 0;
 }
 static inline void usbi_mutex_destroy(usbi_mutex_t *mutex)
 {
-	_android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_destroy");
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "usbi_mutex_destroy");
 	PTHREAD_CHECK(pthread_mutex_destroy(mutex));
 }
 
