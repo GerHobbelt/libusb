@@ -22,9 +22,9 @@
 #define LIBUSB_THREADS_POSIX_H
 
 #include <pthread.h>
-#ifdef __ANDROID__
+
 #include <android/log.h>
-#endif
+
 
 #define PTHREAD_CHECK(expression)	ASSERT_EQ(expression, 0)
 
