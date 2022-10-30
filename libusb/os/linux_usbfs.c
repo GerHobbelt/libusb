@@ -1184,7 +1184,7 @@ int linux_enumerate_device(struct libusb_context *ctx,
 	
 	//usbi_dbg(ctx, "busnum %u devaddr %u session_id %lu", busnum, devaddr, session_id);
 	 
-	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 5555 %d",session_id);
+	__android_log_print(ANDROID_LOG_DEBUG, "libusb", "linux_usbfs_libusb linux_enumerate_device 5555 %lu",session_id);
 
 	dev = usbi_get_device_by_session_id(ctx, session_id);
 	if (dev) {
